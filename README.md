@@ -11,5 +11,6 @@ Unity 3D Mobile Template
 Unity Version: 2021.3.15f1
 
 ### Assets Used
+https://assetstore.unity.com/packages/3d/environments/urban/simple-city-pack-plain-100348
 
 ### Run
