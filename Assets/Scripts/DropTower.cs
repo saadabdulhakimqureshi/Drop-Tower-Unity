@@ -1,51 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DropTower : MonoBehaviour
 {
-    private float RotateAngle = 30f;
-    private float high = 35f;
-    private float low = -35f;
+    public float RotateAngle = 30f;
+    public float high = 20f;
+    public float low = -20f;
+    public float WaitTime = 5f;
+    public bool CanTakeInput = true;
     [SerializeField] public GameObject BoundingBox;
     [SerializeField] public GameObject Camera;
+
     void Start()
     {
-        
+      
     }
 
     void Update()
     {
-        if (Input.GetKeyUp("a"))
-        {
-            CreateNewBox();
-            BoundingBox.GetComponent<Transform>().parent = null;
-            BoundingBox.GetComponent<BoxCollider>().enabled = true;
-            Destroy(gameObject);
-        }
-        
         Oscillation();
+
     }
 
-    void CreateNewBox()
+
+    public void Action()
     {
-        GameObject newObject = Instantiate(gameObject);
+        Invoke("CreateNewBox", 1f);
+        Drop();
+        
     }
 
-    public void MoveUp()
+
+    void Drop()
     {
-        GetComponent<Transform>().position += new Vector3(0f, 1f, 0);
-        Camera.GetComponent<Transform>().position += new Vector3(0f, 1f, 0);
+        BoundingBox.GetComponent<Transform>().parent = null;
+        BoundingBox.GetComponent<BoxCollider>().enabled = true;
     }
+    public void CreateNewBox()
+    {
+        GameObject newObject = Instantiate(GameObject.Find("CopyDropTower"));
+        newObject.tag = "DropTower";
+        newObject.GetComponent<DropTower>().RotateAngle = RotateAngle;
+        newObject.GetComponent<Transform>().position = gameObject.GetComponent<Transform>().position;
+        newObject.GetComponent<DropTower>().CanTakeInput = false;
+        Destroy(gameObject);
+    }
+
+   
 
     void ChangeAnglePositive()
     {
-        RotateAngle = +60f;
+        RotateAngle = +30f;
     }
     void ChangeAngleNegative()
     {
-        RotateAngle = -60f;
+        RotateAngle = -30f;
     }
 
 
@@ -66,8 +78,6 @@ public class DropTower : MonoBehaviour
 
 
     }
-
-    
 
     void RotateAroundPivot(float angle)
     {

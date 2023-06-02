@@ -8,6 +8,9 @@ TagManager:
   - Platform
   - Building
   - DropTower
+  - Dropped
+  - BoundingBox
+  - Top
   layers:
   - Default
   - TransparentFX
