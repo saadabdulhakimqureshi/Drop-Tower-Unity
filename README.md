@@ -8,9 +8,9 @@ Build up your tower and try to achieve the highest score.
 Game Engine: Unity 2021.3.15f1 3D Mobile
 
 ## Pre-Release Screenshots
-![Alt text](/Images/1.PNG)
-![Alt text](/Images/2.PNG)
-![Alt text](/Images/3.PNG)
+![Alt text](/Images/Gameplay-1.PNG)
+![Alt text](/Images/Selection-Screen.PNG)
+![Alt text](/Images/Environment.PNG)
 
 ## Assets Used
 https://assetstore.unity.com/packages/3d/environments/urban/simple-city-pack-plain-100348
