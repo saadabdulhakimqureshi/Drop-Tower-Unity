@@ -81,7 +81,7 @@ public class BoundingBox : MonoBehaviour
                     GameManager.GetComponent<GameManager>().LoseTry();
                     if (!FailSound.isPlaying)
                         FailSound.Play();
-                    Destroy(gameObject,1f);
+                    Destroy(gameObject);
                     
                 }
                 else
@@ -105,10 +105,9 @@ public class BoundingBox : MonoBehaviour
 
             else if (collision.collider.tag == "Ground")
             {
-                GameManager.GetComponent<GameManager>().LoseTry();
                 if (!FailSound.isPlaying)
                     FailSound.Play();
-                Destroy(gameObject, 1f);
+                Destroy(gameObject);
                 
             }
         }
@@ -116,6 +115,7 @@ public class BoundingBox : MonoBehaviour
         {
             if (collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
             {
+                
                 GameManager.GetComponent<GameManager>().LoseTry();
                 if (!FailSound.isPlaying)
                     FailSound.Play();
@@ -147,12 +147,15 @@ public class BoundingBox : MonoBehaviour
 
     public void RemoveTower()
     {
-        boxes.Remove(gameObject);
-        if (boxes.Count > 0)
-            boxes[boxes.Count - 1].tag = "Top";
 
-        DropTower.MoveDown(GetComponent<Renderer>().bounds.size.y);
+        if (boxes.Count > 0)
+        {
+            boxes.Remove(gameObject);
+            boxes[boxes.Count - 1].tag = "Top";
+            DropTower.MoveDown(GetComponent<Renderer>().bounds.size.y);
+
+            Destroy(gameObject);
+        }
         
-        Destroy(gameObject, 1f);
     }
 }

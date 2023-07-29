@@ -66,7 +66,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void RestartGame()
     {
-        StartCoroutine(RestartGameAsynchronously());
+        SceneManager.LoadScene(1);
     }
 
     IEnumerator RestartGameAsynchronously()

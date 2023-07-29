@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1f;
         SetupLevel();
         
     }
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
         {
             GameMusic.Instance.GetComponent<AudioSource>().Stop();
         }
-        if (!GameOver.isPlaying)
+        if (!GameOver.isPlaying && GameOver.enabled)
         {
             GameOver.Play();
         }
