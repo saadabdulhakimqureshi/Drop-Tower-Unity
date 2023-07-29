@@ -6,21 +6,27 @@ using UnityEngine.UI;
 
 public class DropTower : MonoBehaviour
 {
-    public float RotateAngle = 30f;
-    public float high = 20f;
-    public float low = -20f;
-    public float WaitTime = 5f;
-    public bool CanTakeInput = true;
+    public float RotateAngle;
+    public float high;
+    public float low;
+    public float movingSpeed;
+    public Vector3 movePosition;
+    private float CurrentAngle;
     [SerializeField] public GameObject BoundingBox;
     [SerializeField] public GameObject Camera;
 
     void Start()
     {
-      
+        movePosition = transform.position;
+        ChangeAnglePositive();
     }
 
     void Update()
     {
+        if (transform.position != movePosition)
+        {
+            Move();
+        }
         Oscillation();
 
     }
@@ -28,7 +34,7 @@ public class DropTower : MonoBehaviour
 
     public void Action()
     {
-        Invoke("CreateNewBox", 1f);
+        StartCoroutine(CreateNewBox());
         Drop();
         
     }
@@ -38,26 +44,29 @@ public class DropTower : MonoBehaviour
     {
         BoundingBox.GetComponent<Transform>().parent = null;
         BoundingBox.GetComponent<BoxCollider>().enabled = true;
+        BoundingBox.GetComponent<Rigidbody>().isKinematic = false;
     }
-    public void CreateNewBox()
+
+    IEnumerator CreateNewBox()
     {
-        GameObject newObject = Instantiate(GameObject.Find("CopyDropTower"));
-        newObject.tag = "DropTower";
-        newObject.GetComponent<DropTower>().RotateAngle = RotateAngle;
-        newObject.GetComponent<Transform>().position = gameObject.GetComponent<Transform>().position;
-        newObject.GetComponent<DropTower>().CanTakeInput = false;
-        Destroy(gameObject);
+        GameObject newBox = Instantiate(BoundingBox, BoundingBox.transform.position, BoundingBox.transform.rotation);
+        newBox.SetActive(false);
+        newBox.transform.parent = transform;
+        newBox.transform.localScale = BoundingBox.transform.localScale;
+        yield return new WaitForSeconds(movingSpeed);
+        newBox.SetActive(true);
+        BoundingBox = newBox;
     }
 
    
 
     void ChangeAnglePositive()
     {
-        RotateAngle = +30f;
+        CurrentAngle =  RotateAngle;
     }
     void ChangeAngleNegative()
     {
-        RotateAngle = -30f;
+        CurrentAngle = -1* RotateAngle;
     }
 
 
@@ -74,7 +83,7 @@ public class DropTower : MonoBehaviour
         {
             ChangeAnglePositive();
         }
-        RotateAroundPivot(RotateAngle * Time.deltaTime); ;
+        RotateAroundPivot(CurrentAngle * Time.deltaTime); ;
 
 
     }
@@ -83,5 +92,19 @@ public class DropTower : MonoBehaviour
     {
         Vector3 pivot = GetComponent<Transform>().position;
         GetComponent<Transform>().eulerAngles += new Vector3(0, 0, angle);
+    }
+    void Move() { 
+
+        transform.position = Vector3.Lerp(transform.position, movePosition, movingSpeed * Time.deltaTime);
+    }
+
+    public void MoveUp(float height)
+    {
+        movePosition = movePosition + new Vector3(0f, height, 0); 
+    }
+
+    public void MoveDown(float height)
+    {
+        movePosition = movePosition - new Vector3(0f, height, 0);
     }
 }
